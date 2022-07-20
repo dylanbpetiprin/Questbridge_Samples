@@ -1,12 +1,15 @@
 ---
 title: "Exploring U.S. Supreme Court Decisions"
 author: "Dylan Petiprin"
-output: github_document
+date: "07/20/2022"
+  output: github_document
+    toc: true
+    toc_depth: 2
+always_allow_html: true
 ---
 
-## Get the data
+```{r, results='hide'}
 
-```{r}
 # load useful packages
 library(tidyverse)
 
@@ -14,13 +17,15 @@ library(tidyverse)
 setwd("~/CFSS Homework/hw03/hw03/data")
 vote <- read_csv("scdb-vote.csv")
 case <- read_csv("scdb-case.csv")
+
 ```
 
 
-## What percentage of cases in each term are decided by a one-vote margin (i.e. 5-4, 4-3, etc.)
+## Question 1
 
-
+### What percentage of cases in each term are decided by a one-vote margin (i.e. 5-4, 4-3, etc.)
 ```{r}
+
 # Calculate the number of 1-vote margins per term
 
 # create a list of one-vote proportions using summarise()
@@ -39,13 +44,13 @@ case %>%
 
 ```
 
-## For justices [currently serving on the Supreme Court](https://www.supremecourt.gov/about/biographies.aspx), how often have they voted in the conservative direction in cases involving criminal procedure, civil rights, economic activity, and federal taxation?
+## Question 2
 
-Organize the resulting graph by justice in descending order of seniority. (Note that the chief justice is always considered the most senior member of the court, regardless of appointment date.)
+### For justices [currently serving on the Supreme Court](https://www.supremecourt.gov/about/biographies.aspx), how often have they voted in the conservative direction in cases involving criminal procedure, civil rights, economic activity, and federal taxation?
 
 ```{r}
 
-#c alculate proportion of conservative votes by issue area
+# calculate proportion of conservative votes by issue area
 vote %>% 
     left_join(case, by = "caseId") %>% 
     select(justiceName, direction, issueArea) %>% 
@@ -67,12 +72,11 @@ ggplot(aes(issueArea, cons_perc*100))+
   facet_wrap(~justiceName)+
   labs(title= "U.S Supreme Court", subtitle="Percent of cases decided in a conservative direction", x="Issue Area",y="Percent of votes cast")
 
-
- 
-  
 ```
 
-## In each term, how many of the term's published decisions (decided after oral arguments) were announced in a given month?
+## Question 3
+
+### In each term, how many of the term's published decisions (decided after oral arguments) were announced in a given month?
 
 ```{r}
 
@@ -91,11 +95,15 @@ case %>%
   coord_flip()+
   labs(title = "U.S. Supreme Court", subtitle = "Number of decisions announced post-oral arguments per month, by term",
        y="Number of decisions announced in a term-month")
+
 ```
 
-## Which justices are most likely to agree with with the Court's declaration that an act of Congress, a state or territorial law, or a municipal ordinance is unconstitutional? Identify all cases where the Court declared something unconstitutional and determine the ten justices who most and least frequently agreed with this outcome as a percentage of all votes cast by the justice in these cases. Exclude any justice with fewer than 30 votes in cases where the Court's outcome declares something unconstitutional.
+## Question 4
+
+### Which justices are most likely to agree with with the Court's declaration that an act of Congress, a state or territorial law, or a municipal ordinance is unconstitutional? Identify all cases where the Court declared something unconstitutional and determine the ten justices who most and least frequently agreed with this outcome as a percentage of all votes cast by the justice in these cases. Exclude any justice with fewer than 30 votes in cases where the Court's outcome declares something unconstitutional.
 
 ```{r}
+
 # get all the instances of declared unconstitutionality and tally up each justice's votes
 vote %>% 
   left_join(case, by = "caseIssuesId") %>% 
@@ -128,9 +136,12 @@ vote %>%
  
 ```
 
-## In each term he served on the Court, in what percentage of cases was Justice Antonin Scalia in the majority?
+## Question 5
+
+### In each term he served on the Court, in what percentage of cases was Justice Antonin Scalia in the majority?
 
 ```{r}
+
 # calculate the percentage of Scalia in majority by term
 vote %>% 
   left_join(case, by = "caseIssuesId") %>% 
@@ -147,9 +158,12 @@ summarise(AScal_maj_perc = sum(majority == 2)/sum(majority= n())) %>%
 
 ```
 
-## Create a graph similar to above that adds a second component which compares the percentage for all cases versus non-unanimous cases (i.e. there was at least one dissenting vote)
+## Question 6
+
+### Create a graph similar to above that adds a second component which compares the percentage for all cases versus non-unanimous cases (i.e. there was at least one dissenting vote)
 
 ```{r}
+
 # add another summarise() line to get the percentage for non-unanimous decisions
 vote %>% 
   left_join(case, by = "caseIssuesId") %>% 
@@ -166,9 +180,12 @@ summarise(AScal_maj_perc = sum(majority == 2)/sum(majority= n()),
               geom_line(aes(x=term.x, y=AScal_nunan_maj_perc*100, color = "Non-unanimous decisions")) +
   labs(x = "Term", y = "Percent of total decisions", title= "Percent of the time Scalia was in the majority", color= NULL )+
   theme(legend.position = "bottom")
+
 ```
 
-## In each term, what percentage of cases were decided in the conservative direction?
+## Question 7
+
+### In each term, what percentage of cases were decided in the conservative direction?
 
 ```{r}
 # calculate percentage of conservative cases by term
@@ -183,12 +200,15 @@ vote %>%
   ggplot(aes(x=term.x, y=cons_perc*100))+
   geom_line()+
   labs(x = "Term", y = "Percent of total decisions", title= "U.S. Supreme Court", subtitle = "Percent of cases decided in the conservative direction" )
+
 ```
 
-## The Chief Justice is frequently seen as capable of influencing the ideological direction of the Court. Create a graph similar to the one above that also incorporates information on who was the Chief Justice during the term.
+## Question 8
+
+### The Chief Justice is frequently seen as capable of influencing the ideological direction of the Court. Create a graph similar to the one above that also incorporates information on who was the Chief Justice during the term.
 
 ```{r}
-# retroactively create new dataframe without chief so that the later plots have that sweet, sweet gray background
+# retroactively create new dataframe without chief so that the later plots have gray background
 vote_nochief <- vote %>% 
   left_join(case, by = "caseIssuesId") %>% 
   select(term.x, decisionDirection, caseIssuesId) %>% 
