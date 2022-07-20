@@ -22,6 +22,10 @@ case <- read_csv("scdb-case.csv")
 
 ```
 
+## Overview 
+
+#### This was an assignment designed to explore supreme court decisions by historical era, court composition, and topic. 
+
 
 ## Part 1
 

@@ -3,6 +3,7 @@ Exploring U.S. Supreme Court Decisions
 Dylan Petiprin
 7/20/2022
 
+-   [Overview](#overview)
 -   [Part 1](#part-1)
 -   [Part 2](#part-2)
 -   [Part 3](#part-3)
@@ -22,6 +23,10 @@ setwd(here("R_files", "scotus_project", "data"))
 vote <- read_csv("scdb-vote.csv")
 case <- read_csv("scdb-case.csv")
 ```
+
+## Overview
+
+#### This was an assignment designed to explore supreme court decisions by historical era, court composition, and topic.
 
 ## Part 1
 
