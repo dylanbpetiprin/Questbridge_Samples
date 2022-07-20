@@ -1,20 +1,22 @@
 ---
 title: "Exploring U.S. Supreme Court Decisions"
 author: "Dylan Petiprin"
-date: "07/20/2022"
-  output: github_document
+date: "7/20/2022"
+output: 
+  html_document:
     toc: true
     toc_depth: 2
-always_allow_html: true
+    keep_md: true
 ---
 
 ```{r, results='hide'}
 
 # load useful packages
 library(tidyverse)
+library(here)
 
 # load data
-setwd("~/CFSS Homework/hw03/hw03/data")
+setwd(here("R_files", "scotus_project", "data"))
 vote <- read_csv("scdb-vote.csv")
 case <- read_csv("scdb-case.csv")
 
