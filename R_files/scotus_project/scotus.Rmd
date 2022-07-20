@@ -3,10 +3,10 @@ title: "Exploring U.S. Supreme Court Decisions"
 author: "Dylan Petiprin"
 date: "7/20/2022"
 output: 
-  html_document:
+  github_document:
     toc: true
     toc_depth: 2
-    keep_md: true
+always_allow_html: true
 ---
 
 ```{r, results='hide'}
