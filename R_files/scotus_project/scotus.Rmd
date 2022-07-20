@@ -230,7 +230,7 @@ vote_nochief <- vote %>%
   geom_line(aes(x=term.x, y=cons_perc*100)) +
   facet_wrap(~chief) +
 
-# add the background layer
+# add layer to background 
    geom_line(data = vote_nochief, aes(x=term.x, y=cons_perc*100), alpha = .25) +
   labs(x = "Term", y = "Percent of total decisions", title= "U.S. Supreme Court", subtitle = "Percent of cases decided in the conservative direction" ) +
   scale_x_continuous(breaks = c(1800,1900,2000))
